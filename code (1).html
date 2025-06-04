@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Reading & Quiz App</title>
+  <style>
+    /* General styling */
+    body {
+      font-family: Arial, sans-serif;
+      background: #e9f0fb;
+      margin: 0;
+      padding: 20px;
+      color: #34495e;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      max-width: 900px;
+      width: 100%;
+      background: white;
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 6px 20px rgba(74, 144, 226, 0.2);
+    }
+
+    h1.app-title {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 30px;
+      font-weight: 700;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 25px;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+      font-weight: 600;
+      user-select: none;
+    }
+
+    .primary-btn {
+      background-color: #4a90e2;
+      color: white;
+    }
+
+    .primary-btn:hover {
+      background-color: #357ABD;
+    }
+
+    .secondary-btn {
+      background-color: #d1d9e6;
+      color: #34495e;
+      margin-top: 15px;
+    }
+
+    .secondary-btn:hover {
+      background-color: #aeb8cc;
+    }
+
+    .card {
+      margin-top: 25px;
+      display: none;
+    }
+
+    /* Reading Section Styling */
+    #readingSection {
+      display: none;
+      border: 2px solid #4a90e2;
+      border-radius: 12px;
+      padding: 25px 35px;
+      max-width: 800px;
+      background-color: #f9fbfd;
+      box-shadow: 0 4px 12px rgba(74, 144, 226, 0.2);
+      font-family: 'Georgia', serif;
+      color: #2c3e50;
+      position: relative;
+    }
+
+    #readingSection p {
+      font-weight: 700;
+      font-size: 1.1rem;
+      line-height: 1.8;
+      text-align: justify;
+      user-select: text;
+      margin-bottom: 1.5em;
+    }
+
+    /* Timer displayed top-right inside reading box */
+    #readingTimer {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #4a90e2;
+      user-select: none;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* Input Section */
+    #nameInputSection label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #34495e;
+    }
+
+    #nameInputSection input {
+      width: 300px;  /* Changed from 100% to 300px for medium size */
+      padding: 10px 15px;
+      font-size: 1rem;
+      border: 2px solid #4a90e2;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      box-sizing: border-box;
+    }
+
+    /* Quiz Section */
+    #quizSection form {
+      margin-bottom: 15px;
+    }
+
+    .question-block {
+      margin-bottom: 25px;
+      padding: 15px 20px;
+      border: 1.5px solid #a3b1c6;
+      border-radius: 10px;
+      background: #f0f5fb;
+    }
+
+    .question-block h3 {
+      margin-bottom: 12px;
+      font-weight: 700;
+      color: #2c3e50;
+      font-size: 1.1rem;
+    }
+
+    .options label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    /* Result Section */
+    #resultSection h2 {
+      color: #2c3e50;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    #resultSection p {
+      font-size: 1rem;
+      margin: 8px 0;
+    }
+
+    .correct {
+      color: green;
+      font-weight: 700;
+      margin-left: 10px;
+    }
+
+    .incorrect {
+      color: red;
+      font-weight: 700;
+      margin-left: 10px;
+    }
+
+    .unanswered {
+      color: gray;
+      font-weight: 700;
+      margin-left: 10px;
+    }
+
+    .correct-answer {
+      color: blue;
+      font-weight: 700;
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="app-title">📘 NAADIGA AKHRISKA JAMACAD JIGJIGA</h1>
+
+    <button id="startReadingBtn" class="primary-btn">BILAW AKHRISKA</button>
+
+    <section id="readingSection" class="card">
+      <div id="readingTimer">Time: 0s</div>
+      <p>
+        Akhriste, waxaad tijaabo ku qaadan doontaa Qoraalkan hoose oo uu qoray Mahamud Sheikdahir, waxa uuna ka koobanyahay 866 erey. Nasiib wacan.
+
+Inkasta oo aan tirakoob rasmi ah iyo baaritaan dhab ah weli lagu samayn, haddana daah ma saarna in waayahan danbe ay tusbaxfurtay noqdeen dhallinyarada Soomaaliyeed ee sida sahlan uga baxaya diinta. Dal Muslim ah, tuula kasta oo aad tagto aadan ka waayayn masjid iyo dugsi qur'aan, aan culummo ku yarayn islamarkaana aysan joogin missionaries iyo dad faafiya afkaartaas diin la'aanta, in dhalintiisii ku dhalatay walina aan dhan u dhaafin ay si tarab tarab ah uga baxayaan diinta ma ahan arrin lala xiriirin karo wakhtiga iyo samanka—ee waa kiis weyn oo ay tahay in aan bulsho ahaan la sahlan, lana baaro salka dhibaatadani ka soo burqanayso.
+
+Dadku marka aad arrintan wax ka waydiiso—intooda badani—waxa ay dhakada u saaraan meela aysan lahayn oo haddii indho caafimaad qaba lagu eego waxba kama jiraan noqonaya.
+Qolada ugu doodda xooggani waxa ay dhakada u saareen "Akhriska" oo aad ugu koraya dhulka Soomaalida baryahan danbe—ilaa heer ay gaarsiiyaan in la burburiyo maktabadaha iyo ilaha akhriska—iyaga oo isku xiraya labada kor u kac ee akhriska iyo diin la'aantu mid walba sida gaarka ah u sameeyay.
+
+Qolo kale oo iyaguna aan miisaanyarayni, waxa ay qoorta u suraan hummaag ay is tuseen, iyaga oo ku doodaya, "in wadanka ay joogaan missionaries faafiya arrimahan." Balse, shaqsi ahaan anigu waxa aan qabaa in arrimahaas oo dhami aysan jirin haddii ay jiraanna ay yihiin farac ee asalka laga meeraysanayo. Inta aanan u guda galin arrimaha keena, aan kaaga sheekeeyo sheeko yar oo anigu aan goobjoog u ahaa, si an usoo dhaweeyo fahankaaga ku aaddan dooddayda.
+
+Maalmihii ugu danbeeyay Sanadkii tagay ee 2023, ayaan soo xaadiray Galaas uu nagu lahaa macallin Soomaali ah oo an ku tuhmayay aqoon diineed iyo mid maaddi, cinwaanka casharku maanta waa "Philosophy" gaar ahaan mawduuca "Metaphysics" oo ka hadla jiritaanka iyo xaqiiqada jriritaanka, mawduucan ayaana jawaaba u raadsha waydiimo ay kamid yihiin;
+Maxaa xaqiiq ah?
+Ilaahay ma jiraa?
+Haduu jiro ma caddayn karnaa?
+Aadanuhu ma mid ka masuul ah baa waxa uu samaynayo, mise waa mid ficiladiisu horay loo sii go'aamiyay? Ma waxaa jira xiriir ka dhexeeya xaqiiqada iyo waxa aan arkayno ee indheheennu qabanayaan? Iyo kuwa kale oo badan.
+
+Su'aalahan ayaana badidoodu ah kuwa taabanaya diinta, islamarkaana shaki gelin kara dhalinyarada aan aqoonta badan u lahayn diinta ama aan jawaab qancisa u hayn. Sida aan filayay, waxa ay ahayd; in macallinka oo aan ku tuhmayay aqoondiineed iyo tu maadiba, uu wajaho waydiimaha, islamarkaana ka jaahil bixiyo dhalinyarada si kalsoonidooda diimeed aysan u gaagixin. Balse amakaaggu waxa uu ahaa, markii macalinkii lasoo istaagay cayda iyo aflagaadaynta cilmiga Falsafadda oo dhan isaga oo ardadii uga digaya inay bartaan, su'aalahana dhamaantood ku dhaafay "Subxaanalaah iyo waxa ay iswaydiinayaan day gaaladu!".
+
+Halkaas marka ay joogto, maxaad ka filaysaa wiilka yar ee aan diintiisa waxba ka aqoon, kii ku dhaamay ee u tuhmayayna ka meeraystay su'aalihii shakiga abuurayay? Jawaabtu waa in uu ku qanco in diinta aan caddayn loo hayn, sidaasna uga siibto. Sidaas darteed, Missionaries-ka koobaad ee dhalintaas diinta ka saaraa waa Culimmadooda. Halkii ay ahayd in dhalinta ay ka jaahil bixiyaan oo ay u caddeeyaan boqollaalka su'aalood ee shakiga ku abuuray ayay culimadeenii isku mashquuliyeen masalooyin yaryar oo fiqi ah, bulshadiina ku dhagabarjeeyeen murankooda maalin walba taagan.
+
+Qolada labaad ama missionaries-ka labaad ee ka saaraana waa qoysaskooda iyo ehelkooda—oo marka uu ula yimaado su'aala noocan ah ku bilaabaya "balaa wadata" iyo takoor, halkii lagu soo dhawayn lahaa wax-is-waydiintiisa iyo fakarkiisa, islamarkaana laga qancin lahaa ama lagu taageeri lahaa sidii uu ku heli lahaa xaqiiqada
+
+Qolada sadexaad ee iyaguna gacanta ka gaysta fogaanshaha dhalinyaradu waa bulshada uu la noolyahay oo marka uu iswaydiintaas iyo shakigaasi ku bilowdaba dhankooda shaabad ku sii dhufata sidii ay iyagu maxkamado fadhiyaan.
+
+Qolada afaraad malahaygana uu asalkuba u noqonayaa waa macallimiinta dugsiyada u soo dhigay yaraantii. Qoladaasi waa cidda koobaad ee ilmaha diinta jeclaysiin karta ama nacsiin karta, macalinmiinnteenu inta badan ilmaha waxa ay dugsiga uga dhigaan goob ciqabeed yar oo ilmaha lagu jir dilo—halkii ay ahayd in ilmaha lagu barbaarsho oo lagu korsho. Isha diin nacaybka ilmuhu kasoo bilowdaana waa xagaas oo qofna jeclaan maayo meel ul lagala hortagay bilowgiiba.
+
+Haddii aan isla garnay dhibka iyo ilaha u kasoo burqanayo, waa in an keenna xalka dhibkaas si aysan dooddeenu u noqon cataw iyo hadal caalwaa.
+Aragtidayda, xalku waa baddalidda dhaqamada noocan ah ee aan soo sheegay iyo hagaajintooda.
+
+1. Culimadu waa in aysan ka meeraysan ee si caqligal ah oo la fil ah qarniga 21ªªd uga jawaabaan waydiimaha shakiga keeni kara.
+2. Waa in la joojiyo ceebaynta iyo takoorka qofka su'aal iska waydiiya diinta, taas baddalkeedana lagu dhiirrigaliyaa. Sababtoo ah qofka aan diintiisa wax iska waydiini wuu aaminaa, balse kan wax iska waydiiyaa wuu bartaa haddii u helo ciddii saxda ahayd.
+3. Waa in dugsiyada qu'raanka laga joojiyo guud ahaanba usha iyo ciqaabta foosha xun, oo ay noqdaan goob lagu dhiso maanka ilmaha ee an lagu dumin.
+4. Waa in bulshadu dhigtaa shaabaddan weyn ee qof walbaa tunka ku sito, islamarkaana wixii xukun ah loo daayo dadka aqoonta iyo dawga u leh.
+5. Waa in culimada la saaxiibtaa dhalinyarada oo aysan qol isku soo xirin, waayo markasta oo xiriirka culimada iyo dhalinyaradu hagaago waxaa meesha ka baxaya dagnaantii iyo fursaddii lagu heli lahaa dhalinyaradaas.
+        <!-- (Content omitted for brevity) -->
+      </p>
+      <button id="finishReadingBtn" class="secondary-btn">AKHRISKA DHAMEEYAY</button>
+    </section>
+
+    <section id="nameInputSection" class="card">
+      <label for="fullName">GALI MAGACAAGA OO SADAXAN:</label>
+      <input type="text" id="fullName" class="input-text" placeholder="Full Name" />
+      <button id="startQuizBtn" class="primary-btn">BILAW SU'AALAHA</button>
+    </section>
+
+    <section id="quizSection" class="card">
+      <form id="quizForm"></form>
+      <button id="submitQuizBtn" class="primary-btn">DHIIB JAWABTA</button>
+    </section>
+
+    <section id="resultSection" class="card">
+      <h2>📊 NATIIJADA TARTAMAHA</h2>
+      <p><strong>MAGACA TARTAMAHA:</strong> <span id="displayName"></span></p>
+      <p><strong>WAKHTIGA AAD AKHRISKA KU DHAMAYSAY:</strong> <span id="readingTime"></span> DAQIIQO</p>
+      <p><strong>DHIBCAHA:</strong> <span id="score"></span> / 10</p>
+      <p><strong>SU'ALAHA AAD SAXDAY:</strong> <span id="correctAnswers"></span></p>
+      <p><strong>SU'ALAHA AAD KHALADAY:</strong> <span id="incorrectAnswers"></span></p>
+      <p><strong>SU'ALAHA AADAN KAJAWABIN:</strong> <span id="unansweredQuestions"></span></p>
+      <div id="correctAnswersDetails"></div>
+    </section>
+  </div>
+
+  <script>
+    const startReadingBtn = document.getElementById('startReadingBtn');
+    const readingSection = document.getElementById('readingSection');
+    const finishReadingBtn = document.getElementById('finishReadingBtn');
+    const nameInputSection = document.getElementById('nameInputSection');
+    const startQuizBtn = document.getElementById('startQuizBtn');
+    const quizSection = document.getElementById('quizSection');
+    const submitQuizBtn = document.getElementById('submitQuizBtn');
+    const resultSection = document.getElementById('resultSection');
+    const displayName = document.getElementById('displayName');
+    const scoreDisplay = document.getElementById('score');
+    const correctAnswersDisplay = document.getElementById('correctAnswers');
+    const incorrectAnswersDisplay = document.getElementById('incorrectAnswers');
+    const unansweredQuestionsDisplay = document.getElementById('unansweredQuestions');
+    const readingTimeDisplay = document.getElementById('readingTime');
+    const readingTimer = document.getElementById('readingTimer');
+    const fullNameInput = document.getElementById('fullName');
+    const quizForm = document.getElementById('quizForm');
+    const correctAnswersDetails = document.getElementById('correctAnswersDetails');
+
+    let readingStartTime = 0;
+    let readingElapsedTime = 0;
+    let readingTimerInterval = null;
+
+    const questions = [
+      {
+        question: "Ninka meeriska u horreeya tiriyay waa?",
+        options: { B: "Faarax Nuux", T: "Cali Dhuux", J: "Nuurudiin", X: "Midna" },
+        answer: "B"
+      },
+      {
+        question: "Sida uu qoraagu tilmaamay Missionaries-ka ugu weyni waa?",
+        options: { B: "Waalidkiis", T: "Bulshadiisa", J: "Culimada ", X: "Midna" },
+        answer: "J"
+      },
+      {
+        question: "Muxuu ka hadlaya Qoraalka aad soo akhriday?",
+        options: { B: "Korriinka ilmaha", T: "Dhibaatada Diin la'aanta", J: "Sababaha keenay in Dhalinyaradu diinta ka baxdo", X: "Midna" },
+        answer: "J"
+      },
+      {
+        question: "Kuwan soo socda kee baan ka mid ahayn sababaha qoraagu sheegay in ay sababeen diin la'aanta dhalinyarada?",
+        options: { B: "Garaaca xilliga dugsiga", T: "Shaabadaynta bulshada", J: "Shaabbadda Qoyska", X: "Akhriska" },
+        answer: "X"
+      },
+      {
+        question: "Muxuu ahaa cinwaanka casharka falsafadda ahaa ee uu qoraagu qaadanayay?",
+        options: { B: "Nature", T: "Psychology", J: "God", X: "Metaphysics" },
+        answer: "X"
+      },
+      {
+        question: "Xaggee ayay dadku u aaneeyaan marka wax laga waydiiyo sababta keentay Diin la'aanta dhalinyarada?",
+        options: { B: " Tiknolojiyadda", T: "Abaaraha", J: "Akhriska", X: "Midna" },
+        answer: "J"
+      },
+      {
+        question: "Waa kuma qoraaga qoraalka aad soo akhriday?",
+        options: { B: "Mahamud Sheikdahir ", T: "Siyaad Heersare", J: "Sakariye Mahamud", X: "Midna" },
+        answer: "B"
+      },
+      {
+        question: "Sanadkee ayuu qoraagu qaadanayay casharka falsafadda?",
+        options: { B: "2022", T: "2023", J: "2024", X: "2025" },
+        answer: "T"
+      },
+      {
+        question: "Imisa talo ayuu qoraagu baxshay?",
+        options: { B: "1", T: "3", J: "4", X: "5" },
+        answer: "X"
+      },
+      {
+        question: "Talada labaad ee qoraagu baxshay waa?",
+        options: { B: "In culimadu la saaxiibto dhalinyarada", T: "In dhalinyaradu barato diintooda", J: "in dhalinyaradu wax akhriyaan", X: "in la joojiyo Takoorka dhalinyarada wax iswaydiisa" },
+        answer: "X"
+      }
+    ];
+
+    function startReading() {
+      startReadingBtn.style.display = 'none';
+      readingSection.style.display = 'block';
+      nameInputSection.style.display = 'none';
+      quizSection.style.display = 'none';
+      resultSection.style.display = 'none';
+
+      readingStartTime = Date.now();
+      readingTimer.textContent = 'Time: 0s';
+      readingTimerInterval = setInterval(() => {
+        readingElapsedTime = Math.floor((Date.now() - readingStartTime) / 1000);
+        readingTimer.textContent = `Time: ${readingElapsedTime}s`;
+      }, 1000);
+    }
+
+    function finishReading() {
+      clearInterval(readingTimerInterval);
+      readingSection.style.display = 'none';
+      nameInputSection.style.display = 'block';
+      fullNameInput.focus();
+    }
+
+    function startQuiz() {
+      const fullName = fullNameInput.value.trim();
+      if (!fullName) {
+        alert('Please enter your full name before starting the quiz.');
+        fullNameInput.focus();
+        return;
+      }
+
+      nameInputSection.style.display = 'none';
+      quizSection.style.display = 'block';
+      resultSection.style.display = 'none';
+
+      generateQuiz();
+    }
+
+    function generateQuiz() {
+      quizForm.innerHTML = '';
+      questions.forEach((q, index) => {
+        const div = document.createElement('div');
+        div.className = 'question-block';
+        div.innerHTML = `<h3>Q${index + 1}. ${q.question}</h3>`;
+
+        const optionsDiv = document.createElement('div');
+        optionsDiv.className = 'options';
+
+        for (const [key, val] of Object.entries(q.options)) {
+          const id = `q${index}_${key}`;
+          const label = document.createElement('label');
+          label.htmlFor = id;
+          label.innerHTML = `<input type="radio" name="question${index}" id="${id}" value="${key}" /> ${key}. ${val}`;
+          optionsDiv.appendChild(label);
+        }
+        div.appendChild(optionsDiv);
+        quizForm.appendChild(div);
+      });
+    }
+
+    function submitQuiz() {
+      const fullName = fullNameInput.value.trim();
+      if (!fullName) {
+        alert('Full name missing. Please reload and enter your name.');
+        return;
+      }
+
+      let score = 0;
+      let correctCount = 0;
+      let incorrectCount = 0;
+      let unansweredCount = 0;
+
+      // Clear previous results
+      correctAnswersDetails.innerHTML = '';
+
+      // Show check marks and crosses per question
+      const questionBlocks = quizForm.querySelectorAll('.question-block');
+      questions.forEach((q, idx) => {
+        const selected = quizForm.querySelector(`input[name="question${idx}"]:checked`);
+        const block = questionBlocks[idx];
+
+        // Remove previous marks if any
+        const prevMark = block.querySelector('.correct, .incorrect, .unanswered');
+        if (prevMark) prevMark.remove();
+
+        const markSpan = document.createElement('span');
+
+        if (!selected) {
+          unansweredCount++;
+          markSpan.textContent = '✖ (Unanswered)';
+          markSpan.className = 'unanswered';
+        } else if (selected.value === q.answer) {
+          correctCount++;
+          score++;
+          markSpan.textContent = '✔';
+          markSpan.className = 'correct';
+        } else {
+          incorrectCount++;
+          markSpan.textContent = '✖';
+          markSpan.className = 'incorrect';
+        }
+
+        // Append mark next to question title
+        block.querySelector('h3').appendChild(markSpan);
+
+        // Add correct answer details
+        const correctAnswerText = document.createElement('p');
+        correctAnswerText.className = 'correct-answer';
+        correctAnswerText.textContent = `Correct Answer: ${q.answer} - ${q.options[q.answer]}`;
+        correctAnswersDetails.appendChild(correctAnswerText);
+      });
+
+      displayName.textContent = fullName;
+      scoreDisplay.textContent = score;
+      correctAnswersDisplay.textContent = correctCount;
+      incorrectAnswersDisplay.textContent = incorrectCount;
+      unansweredQuestionsDisplay.textContent = unansweredCount;
+      readingTimeDisplay.textContent = readingElapsedTime;
+
+      quizSection.style.display = 'none';
+      resultSection.style.display = 'block';
+    }
+
+    startReadingBtn.addEventListener('click', startReading);
+    finishReadingBtn.addEventListener('click', finishReading);
+    startQuizBtn.addEventListener('click', startQuiz);
+    submitQuizBtn.addEventListener('click', submitQuiz);
+  </script>
+</body>
+</html>
+
